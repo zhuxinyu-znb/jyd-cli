@@ -1,0 +1,21 @@
+.header-container {
+    width: 100%;
+    height: 8.5vh;
+    padding-left: 20px;
+    line-height: 8.5vh;
+    font-size: 2em;
+    color: #fff;
+    position: absolute;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, rgb(101,112,79),rgb(69,95,129), rgb(25,26,75));;
+}

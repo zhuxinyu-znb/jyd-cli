@@ -1,0 +1,70 @@
+.task-container {
+    width: 20vw;
+    height: 23vh;
+    background: linear-gradient(to left, #000, rgba(255, 255, 255, 0));
+    position: absolute;
+    right: 0;
+    top: 8.5vh;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    .task-title {
+        font-size: 22px;
+        color: #00E0FF;
+        text-align: center;
+        height: 4.375rem;
+        line-height: 4.375rem;
+    }
+
+    .task-total-num {
+        display: flex;
+        color: #00E0FF;
+        font-weight: bold;
+        font-size: 40px;
+        width: 40%;
+        justify-content: space-around;
+        div {
+            background: rgb(9, 30, 61);
+            border: 1px solid rgb(25, 55, 94);
+            width: 40px;
+            height: 54px;
+            line-height: 54px;
+            text-align: center;
+        }
+    }
+
+    .task-option-container {
+        display: flex;
+        justify-content:space-between;
+        height: 6.875rem;
+        width: 100%;
+        .task-option {
+            width: 6.875rem;
+            height: 5.375rem;
+            text-align: center;
+            .task-option-title {
+                color: #fff;
+                font-size: 18px;
+            }
+            .task-option-num{
+                margin-right: 5px;
+                font-size: 30px;
+                font-weight: bold;
+            }
+            .task-option-per{
+                font-size: 14px;
+            }
+            .one{
+                color: #1DBF60;
+            }
+            .two{
+                color: #F8E71C;
+            }
+            .three{
+                color: #F5A623;
+            }
+        }
+    }
+}
