@@ -1,0 +1,1 @@
+git push -f git@github.com:zhuxinyu-znb/jyd-cli.git master
