@@ -89,18 +89,8 @@ const bindHandler = {
                                 shell.rm('-rf', _projectPath + "/src/server");
                                 shell.rm('-rf', _projectPath + "/package.json");
                                 shell.mv(_projectPath + "/package1.json", _projectPath + "/package.json");
-                                shell.sed("-i", /^.*koa.*$/g, '', _projectPath + "/package.json");
-                                // shell.sed("-i", /^.*"awilix-koa".*$/, '', _projectPath + "/package.json");
-                                // shell.sed("-i", /^.*"koa".*$/, '', _projectPath + "/package.json");
-                                // shell.sed("-i", /^.*"koa-bodyparser".*$/, '', _projectPath + "/package.json");
-                                // shell.sed("-i", /^.*"koa-router".*$/, '', _projectPath + "/package.json");
-                                // shell.sed("-i", /^.*"koa-static".*$/, '', _projectPath + "/package.json");
-                                // shell.sed("-i", /^.*"koa-swig".*$/, '', _projectPath + "/package.json");
-                                // shell.sed("-i", /^.*"koa2-connect-history-api-fallback".*$/, '', _projectPath + "/package.json");
-                                // shell.sed("-i", /^.*"@types\/koa".*$/, '', _projectPath + "/package.json");
-                                // shell.sed("-i", /^.*"@types\/koa-bodyparser".*$/, '', _projectPath + "/package.json");
-                                // shell.sed("-i", /^.*"@types\/koa-static".*$/, '', _projectPath + "/package.json");
-                                // shell.sed("-i", /^.*"ts-node-dev".*$/, '', _projectPath + "/package.json");
+                            } else {
+                                shell.rm('-rf', _projectPath + "/package1.json");
                             }
                             // 根据选择是否添加高德地图
                             if (_map) {
@@ -112,8 +102,6 @@ const bindHandler = {
                             }
                             // 在package.json 中查找到要替换的名字，将用户输入的文件夹名替换上去
                             shell.sed("-i", "react-ts-template", _dirname, _projectPath + "/package.json");
-                            shell.cd(_dirname);
-                            shell.exec('cnpm install', {async:true});
                         }
                     })
                 }
