@@ -17,7 +17,7 @@ const templateUrl = "direct:https://github.com/zhuxinyu-znb/react-ts-template.gi
 
 
 // 版本号
-const txt = figlet.textSync('JYD-CLI v1.0.6');
+const txt = figlet.textSync('JYD-CLI v1.0.7');
 // 添加版本号
 program.version(Printer.default.fromString(txt), "-v,--version");
 // 根据用户输入不同的初始化指令做不同的骚操作
