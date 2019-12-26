@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+const fs = require('fs');
 const figlet = require('figlet');/* *********************** 生成asc码的包*/
 const Printer = require('@darkobits/lolcatjs');/* ********* 做渐变色的包*/
 const program = require('commander');/* ******************* 和用户交互的包*/
@@ -6,6 +7,7 @@ const inquirer = require('inquirer');/* ******************* 和用户交互的�
 const chalk = require('chalk');/* ************************* 说话变颜色的包*/
 const json2ts = require('json2ts');/* ********************* 把json转换成ts的包*/
 const ora = require('ora');/* ***************************** 添加loading等待的包*/
+const execSync = require('child_process').execSync;
 // 获取用户全路径的包
 // const userHome = require('user-home');
 // 也可以直接用shelljs来取
@@ -17,7 +19,7 @@ const templateUrl = "direct:https://github.com/zhuxinyu-znb/react-ts-template.gi
 
 
 // 版本号
-const txt = figlet.textSync('JYD-CLI v1.0.7');
+const txt = figlet.textSync('JYD-CLI v1.0.8');
 // 添加版本号
 program.version(Printer.default.fromString(txt), "-v,--version");
 // 根据用户输入不同的初始化指令做不同的骚操作
@@ -31,12 +33,12 @@ const bindHandler = {
                 name: 'dirname',
                 message: '请输入项目名称'
             },
-            {
+            /* {
                 type: 'list',
                 name: 'jskind',
                 message: '请问使用哪种编程语言',
                 choices: ['✔ es6(还没搭好╮(╯▽╰)╭)', '✔ typescript']
-            },
+            }, */
             {
                 type: 'list',
                 name: 'tOb',
@@ -63,23 +65,27 @@ const bindHandler = {
                 // 4.在用户的桌面创建最终的项目
                 // 5.引导开发使用
                 const _dirname = answers.dirname;
-                const tsReg = /typescript$/g;
+                // const tsReg = /typescript$/g;
                 const typeReg = /可视化平台$/g;
                 const bffReg = /Yes$/g;
                 const mapReg = /Yes$/g;
-                const _kind = tsReg.test(answers.jskind) ? 'ts' : 'js';
+                // const _kind = tsReg.test(answers.jskind) ? 'ts' : 'js';
                 const _type = typeReg.test(answers.tOb) ? 'visual' : 'mansys';
                 const _bff = bffReg.test(answers.isBFF);
                 const _map = mapReg.test(answers.ismap);
+                const _pwd = shell.pwd().stdout;
+                const _projectPath = `${_pwd}/${_dirname}`;
+                checkAppName(_dirname);
+                if (!isSafeToCreateProjectIn(_pwd, _dirname)) {
+                    process.exit(1);
+                }
                 if (_dirname) {
                     const spinner = ora("正在下载模板，请稍后。。。");
                     spinner.start();
-                    const _pwd = shell.pwd().stdout;
-                    const _projectPath = `${_pwd}/${_dirname}`;
                     shell.cd(_pwd);
                     shell.rm('-rf', _projectPath);
                     shell.mkdir(_dirname);
-                    download(`${templateUrl}#${_kind}_${_type}_ssr`, _projectPath, { clone: true }, err => {
+                    download(`${templateUrl}#ts_${_type}_ssr`, _projectPath, { clone: true }, err => {
                         spinner.stop();
                         if (err) {
                             console.log(chalk.red('mycli启动异常'), err);
@@ -142,3 +148,73 @@ program.usage("<cmd> [env]")
         }
     })
 program.parse(process.argv);
+
+// 进行项目名检查
+function checkAppName(appName) {
+    const dependencies = ['react', 'react-dom', 'react-scripts', 'redux', 'echarts', 'react-redux', 'antd', 'babel-plugin-import', 'react-app-rewired'].sort();
+    if (dependencies.indexOf(appName) >= 0) {
+        console.error(
+            chalk.red(
+                `不能创建名字叫 ${chalk.green(
+                    appName
+                )} 的项目\n` +
+                `因为这个名字和一些依赖包的名字相同!!\n\n`
+            ) +
+            chalk.cyan(dependencies.map(depName => `  ${depName}`).join('\n')) +
+            chalk.red('\n\n赶紧换个名！！.')
+        );
+        process.exit(1);
+    }
+}
+
+// 检查要创建的项目文件夹是否安全，是不是已经存在这个文件夹
+function isSafeToCreateProjectIn(root, name) {
+    const validFiles = [
+        '.DS_Store',
+        'Thumbs.db',
+        '.git',
+        '.gitignore',
+        '.idea',
+        'README.md',
+        'LICENSE',
+        'web.iml',
+        '.hg',
+        '.hgignore',
+        '.hgcheck',
+        '.npmignore',
+        'mkdocs.yml',
+        'docs',
+        '.travis.yml',
+        '.gitlab-ci.yml',
+        '.gitattributes',
+    ];
+    console.log();
+    const conflicts = fs
+        .readdirSync(root)
+        .filter(file => !validFiles.includes(file));
+    if (!conflicts.includes(name)) {
+        return true;
+    }
+
+    console.log(
+        `当前文件夹可能包含冲突文件:`
+    );
+    console.log();
+    console.log(`${chalk.red(name)} `);
+    console.log();
+    console.log(
+        '要么换个文件名，要么把上面说的文件删了！'
+    );
+    return false;
+}
+
+// 判断有没有yarn
+function hasYarn() {
+    const version = shell.exec('node --version', {silent:true}).stdout;
+    return !!version;
+}
+
+// 安装依赖
+const install = function () {
+    hasYarn()
+}
