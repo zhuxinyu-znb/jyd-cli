@@ -7,6 +7,7 @@ const inquirer = require('inquirer');/* ******************* 和用户交互的�
 const chalk = require('chalk');/* ************************* 说话变颜色的包*/
 const json2ts = require('json2ts');/* ********************* 把json转换成ts的包*/
 const ora = require('ora');/* ***************************** 添加loading等待的包*/
+const spawn = require('cross-spawn');
 const execSync = require('child_process').execSync;
 // 获取用户全路径的包
 // const userHome = require('user-home');
@@ -19,7 +20,7 @@ const templateUrl = "direct:https://github.com/zhuxinyu-znb/react-ts-template.gi
 
 
 // 版本号
-const txt = figlet.textSync('JYD-CLI v1.0.8');
+const txt = figlet.textSync('JYD-CLI v1.0.9');
 // 添加版本号
 program.version(Printer.default.fromString(txt), "-v,--version");
 // 根据用户输入不同的初始化指令做不同的骚操作
@@ -109,7 +110,7 @@ const bindHandler = {
                             // 在package.json 中查找到要替换的名字，将用户输入的文件夹名替换上去
                             shell.sed("-i", "react-ts-template", _dirname, _projectPath + "/package.json");
                             console.log(chalk.green('模板下载成功~~~'));
-                            install();
+                            install(_dirname);
                         }
                     })
                 }
@@ -231,18 +232,21 @@ function hasNpm() {
 
 
 // 安装依赖
-const install = function () {
-    // todo 路径不对
+const install = function (dirname) {
+    shell.cd(`./${dirname}`)
     const data = fs.readFileSync('./package.json', 'utf-8');
-    console.log('dependencies', JSON.parse(data).dependencies);
-    if (hasYarn()) {
+    const dependencies = JSON.parse(data).dependencies;
+    const devDependencies = JSON.parse(data).devDependencies;
 
+    if (hasYarn()) {
+        spawn(`yarn install`, { stdio: "inherit" });
     } else if (hasCnpm()) {
         console.log(chalk.yellow(`建议安装使用`) + chalk.blue('yarn') + chalk.yellow('速度会更快一些~~~~'));
+        spawn(`cnpm install`, { stdio: "inherit" });
     } else if (hasNpm()) {
         console.log(chalk.yellow(`建议安装使用`) + chalk.blue('yarn') + chalk.yellow('速度会更快一些~~~~'));
+        spawn(`npm install`, { stdio: "inherit" });
     } else {
         console.log(chalk.red(`请检查 `) + chalk.yellow(`node`) + chalk.red(` 环境或查看是否未安装`) + chalk.yellow(` npm`));
     }
-
 }
