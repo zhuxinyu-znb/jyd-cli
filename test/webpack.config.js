@@ -57,7 +57,7 @@ const webpackConfig = {
     },
     externals: {
         'AMap': 'AMap',
-        'react': {
+        /* 'react': {
             commonjs: "react",
             amd: "react",
         },
@@ -65,14 +65,18 @@ const webpackConfig = {
             commonjs: "react-dom",
             amd: "react-dom",
         },
-        'echarts': {
+        'react-router-dom': {
+            commonjs: "react-router-dom",
+            amd: "react-router-dom",
+        }, */
+        /* 'echarts': {
             commonjs: "echarts",
             amd: "echarts",
-        },
-        'antd': {
+        }, */
+        /* 'antd': {
             commonjs: "antd",
             amd: "antd",
-        },
+        }, */
     },
     module: {
         rules: [
@@ -124,6 +128,7 @@ const webpackConfig = {
     },
     resolve: {
         alias: {
+            // '@ant-design/icons/lib/dist$': resolve(__dirname, 'path/to/antd-icons.js'),
             '@assets': resolve('src/client/assets'),
             '@components': resolve('src/client/components'),
             "@models": resolve('src/client/models'),

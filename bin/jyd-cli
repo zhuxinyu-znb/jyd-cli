@@ -88,7 +88,7 @@ const bindHandler = {
                     download(`${templateUrl}#ts_${_type}_ssr`, _projectPath, { clone: true }, err => {
                         spinner.stop();
                         if (err) {
-                            console.log(chalk.red('mycli启动异常'), err);
+                            console.log(chalk.red('jyd-cli启动异常'), err);
                         } else {
                             // 根据选择是否为BFF架构删除server
                             if (!_bff) {
@@ -108,6 +108,8 @@ const bindHandler = {
                             }
                             // 在package.json 中查找到要替换的名字，将用户输入的文件夹名替换上去
                             shell.sed("-i", "react-ts-template", _dirname, _projectPath + "/package.json");
+                            console.log(chalk.green('模板下载成功~~~'));
+                            install();
                         }
                     })
                 }
@@ -210,11 +212,37 @@ function isSafeToCreateProjectIn(root, name) {
 
 // 判断有没有yarn
 function hasYarn() {
-    const version = shell.exec('node --version', {silent:true}).stdout;
+    const version = shell.exec('yarn -v', { silent: true }).stdout;
     return !!version;
 }
 
+// 判断有没有cnpm
+function hasCnpm() {
+    const version = shell.exec('cnpm -v', { silent: true }).stdout;
+    return !!version;
+}
+
+// 判断有没有npm
+function hasNpm() {
+    const node = shell.exec('node --version', { silent: true }).stdout;
+    const npm = shell.exec('npm -v', { silent: true }).stdout;
+    return node && npm;
+}
+
+
 // 安装依赖
 const install = function () {
-    hasYarn()
+    // todo 路径不对
+    const data = fs.readFileSync('./package.json', 'utf-8');
+    console.log('dependencies', JSON.parse(data).dependencies);
+    if (hasYarn()) {
+
+    } else if (hasCnpm()) {
+        console.log(chalk.yellow(`建议安装使用`) + chalk.blue('yarn') + chalk.yellow('速度会更快一些~~~~'));
+    } else if (hasNpm()) {
+        console.log(chalk.yellow(`建议安装使用`) + chalk.blue('yarn') + chalk.yellow('速度会更快一些~~~~'));
+    } else {
+        console.log(chalk.red(`请检查 `) + chalk.yellow(`node`) + chalk.red(` 环境或查看是否未安装`) + chalk.yellow(` npm`));
+    }
+
 }

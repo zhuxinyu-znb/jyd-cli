@@ -17,12 +17,12 @@ interface YDProps extends RouteProps {
 }
 
 const routeConfig: YDProps[] = [
-  {
+  /* {
     key: 'login',
     path: "/login",
     exact: true,
     component: Login
-  },
+  }, */
   {
     key: 'report',
     path: "/report",

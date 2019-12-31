@@ -9,7 +9,7 @@ import ErrorBoundary from '@components/Error'
 
 message.config({ duration: 2 })
 window.message = message;
-const { useContext } = React
+// const { useContext } = React
 
 
 const App = () => {
