@@ -234,19 +234,23 @@ function hasNpm() {
 // 安装依赖
 const install = function (dirname) {
     shell.cd(`./${dirname}`)
-    const data = fs.readFileSync('./package.json', 'utf-8');
-    const dependencies = JSON.parse(data).dependencies;
-    const devDependencies = JSON.parse(data).devDependencies;
-
-    if (hasYarn()) {
-        spawn(`yarn install`, { stdio: "inherit" });
-    } else if (hasCnpm()) {
-        console.log(chalk.yellow(`建议安装使用`) + chalk.blue('yarn') + chalk.yellow('速度会更快一些~~~~'));
-        spawn(`cnpm install`, { stdio: "inherit" });
-    } else if (hasNpm()) {
-        console.log(chalk.yellow(`建议安装使用`) + chalk.blue('yarn') + chalk.yellow('速度会更快一些~~~~'));
-        spawn(`npm install`, { stdio: "inherit" });
-    } else {
-        console.log(chalk.red(`请检查 `) + chalk.yellow(`node`) + chalk.red(` 环境或查看是否未安装`) + chalk.yellow(` npm`));
+    // const data = fs.readFileSync('./package.json', 'utf-8');
+    // const dependencies = JSON.parse(data).dependencies;
+    // const devDependencies = JSON.parse(data).devDependencies;
+    try {
+        if (hasYarn()) {
+            spawn(`yarn install`, { stdio: "inherit" });
+        } else if (hasCnpm()) {
+            console.log(chalk.yellow(`建议安装使用`) + chalk.blue('yarn') + chalk.yellow('速度会更快一些~~~~'));
+            spawn(`cnpm install`, { stdio: "inherit" });
+        } else if (hasNpm()) {
+            console.log(chalk.yellow(`建议安装使用`) + chalk.blue('yarn') + chalk.yellow('速度会更快一些~~~~'));
+            spawn(`npm install`, { stdio: "inherit" });
+        } else {
+            console.log(chalk.red(`请检查 `) + chalk.yellow(`node`) + chalk.red(` 环境或查看是否未安装`) + chalk.yellow(` npm`));
+        }
+    } catch {
+        console.log(chalk.red(`安装失败！`))
+        process.exit(1);
     }
 }
