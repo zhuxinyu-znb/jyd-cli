@@ -1,6 +1,6 @@
 {
   "name": "jyd-cli",
-  "version": "1.0.9",
+  "version": "1.0.11",
   "description": "jyd快速构建项目",
   "main": "index.js",
   "bin": {
